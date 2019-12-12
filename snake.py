@@ -6,7 +6,7 @@ import pygame
 import tkinter as tkinter
 from tkinter import messagebox
 
-class cube():
+class cube(object):
     rows = 0
     w = 0
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
@@ -24,7 +24,7 @@ class snake(object):
     def __init__(self, color, pos):
         self.color = color
         self.head = cube(pos)
-        self.body.append(self, head)
+        self.body.append(self.head)
         self.dirnx = 0
         self.dirny = 1
     
@@ -52,6 +52,21 @@ class snake(object):
                     self.dirnx = 0
                     self.dirny = 1
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
+        for i, c in enumerate(self.body):
+            p = c.pos[:]
+            if p in self.turns:
+                turn = self.turns[p]
+                c.move(turn[0], turn[1])
+                if i == len(self.body)-1:
+                    self.turns.pop(p)
+            else:
+                if c.dirnx == -1  and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
+                elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
+                elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
+                elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0], c.rows-1)
+                else: c.move(c.dirnx, c.dirny)
+
     def reset(self, pos):
         pass
     
@@ -59,7 +74,11 @@ class snake(object):
         pass
 
     def draw(self, surface):
-        pass
+        for i, c in enumerate(self.body):
+            if i == 0:
+                c.draw(surface, True)
+            else:
+                c.draw(surface)
 
 def drawGrid(w, rows, surface):
     sizeBtwen = w // rows
