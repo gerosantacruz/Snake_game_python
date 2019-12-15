@@ -6,6 +6,7 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
+#Create the cube that will become the snake and the sanke
 class cube(object):
     rows = 20
     w = 500
@@ -35,6 +36,7 @@ class cube(object):
             pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
             pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
 
+#Create the Snake and the different method and properiertes.
 class snake(object):
     body= []
     turns = {}
@@ -111,7 +113,8 @@ class snake(object):
         
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
-        
+
+    #Print the snake in the monitor
     def draw(self, surface):
         for i, c in enumerate(self.body):
             if i == 0:
@@ -120,7 +123,7 @@ class snake(object):
                 c.draw(surface)
 
 
-
+#draw the lines, which will follow the snake
 def drawGrid(w, rows, surface):
     sizeBtwen = w // rows
     x = 0
@@ -133,7 +136,7 @@ def drawGrid(w, rows, surface):
         pygame.draw.line(surface, (0, 0, 0), (x,0), (x,w))
         pygame.draw.line(surface, (0, 0, 0), (0,y), (w,y))
     
-
+#print in the monitor
 def redrawWindow(surface):
     global rows, width, s, snack
     surface.fill((0,0,0))
@@ -141,6 +144,7 @@ def redrawWindow(surface):
     snack.draw(surface)
     drawGrid(width, rows, surface)
 
+#put randomly a snack in the game
 def randomSnack(rows, item):
     positions = item.body
 
@@ -163,7 +167,7 @@ def message_box(subject, content):
         root.destroy()
     except:
         pass
-
+#main loop to execute the game
 def main():
     global width, rows, s, snack
     width = 500
